@@ -10,7 +10,7 @@ import kotlin.math.max
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-class ExampleUnitTest {
+class SplitMessageUnitTest {
 
     fun splitMessage(text: String, maxLengthOnSegment: Int): List<String> {
 
@@ -101,6 +101,8 @@ class ExampleUnitTest {
         }
 
         assertEquals(segments.size, 1)
+
+        assertEquals(segments[0], text)
     }
 
 
@@ -114,16 +116,10 @@ class ExampleUnitTest {
         }
 
         assertEquals(segments.size, 2)
+
+        val seg1 = "1/2 I can't believe Tweeter now supports chunking"
+        val seg2 = "2/2 my messages, so I don't have to do it myself."
+        assertEquals(segments[0], seg1)
+        assertEquals(segments[1], seg2)
     }
-
-    //I can't believe Tweeter now supports chunking my messages, so I don't have to do it myself.
-    //["1/2 I can't believe Tweeter now supports chunking", "2/2 my messages, so I don't have to do it myself."]
-    @Test
-    fun addition_isCorrect() {
-
-
-        //assertEquals(4, 2 + 2)
-    }
-
-
 }
