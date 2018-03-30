@@ -1,9 +1,11 @@
 package com.hoasung.twitsplit
 
-import android.util.Log
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import kotlin.math.max
+import org.junit.rules.ExpectedException
+import org.junit.Rule
+
+
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -63,7 +65,7 @@ class SplitMessageUnitTest {
                         segments.add(currentSegment)
                     }
                 } else if (words[i].length > maxLengthOnSegment) {
-                    throw BigSpanOfNonWhitespace(words[i], maxLengthOnSegment)
+                    throw BigSpanOfNonWhitespaceException(words[i], maxLengthOnSegment)
                 } else {
 
                     segments.add(currentSegment)
@@ -88,7 +90,7 @@ class SplitMessageUnitTest {
         return segments
     }
 
-    class BigSpanOfNonWhitespace(word: String, maxLength: Int) : Throwable() {
+    class BigSpanOfNonWhitespaceException(word: String, maxLength: Int) : Throwable() {
     }
 
     @Test
@@ -121,5 +123,19 @@ class SplitMessageUnitTest {
         val seg2 = "2/2 my messages, so I don't have to do it myself."
         assertEquals(segments[0], seg1)
         assertEquals(segments[1], seg2)
+    }
+
+    @Test(expected = BigSpanOfNonWhitespaceException::class)
+    fun bigSpanOfNonWhitespaceException() {
+        val text = "I can't believe Tweeternowsupportschunkingmymessages,soIdon'thavetodo it myself."
+        val messages = splitMessage(text, 50)
+        assertEquals(messages, null)
+    }
+
+    @Test
+    fun noBigSpanOfNonWhitespaceException() {
+        val text = "I can't believe,soIdon'thavetodo it myself."
+        val messages = splitMessage(text, 50)
+        assertEquals(messages.size, 1)
     }
 }
