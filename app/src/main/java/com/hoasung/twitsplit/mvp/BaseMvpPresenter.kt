@@ -14,7 +14,6 @@ import com.nvg.mvp.MvpView
 open class BaseMvpPresenter<T : MvpView> : MvpPresenter<T> {
 
     var mvpView: T? = null
-        protected set
 
     val isViewAttached: Boolean
         get() = mvpView != null

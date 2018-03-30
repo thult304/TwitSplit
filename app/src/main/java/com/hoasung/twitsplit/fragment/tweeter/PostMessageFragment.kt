@@ -13,11 +13,22 @@ import com.hoasung.twitsplit.listener.PostMessageListener
 import com.hoasung.twitsplit.mvp.tweeter.TweeterPostMvpView
 import com.hoasung.twitsplit.mvp.tweeter.TweeterPostPresenter
 import com.nvg.mvp.MvpView
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 class PostMessageFragment :
         BaseRootViewMvpFragment<FragmentTweeterPostBinding, TweeterPostPresenter>(),
         TweeterPostMvpView,
         PostMessageListener {
+
+    override fun getSubscribeScheduler(): Scheduler? {
+        return Schedulers.io()
+    }
+
+    override fun getObserveScheduler(): Scheduler? {
+        return AndroidSchedulers.mainThread()
+    }
 
     companion object {
         fun showMe(activity: Activity) {
@@ -43,7 +54,7 @@ class PostMessageFragment :
     }
 
     override fun onClickPost(view: View) {
-        mPresenter.splitMessage(mMessage!!)
+        mPresenter.postMessages(mMessage!!)
     }
 
     private fun updateUIForPostButton() {
@@ -61,6 +72,14 @@ class PostMessageFragment :
 
         override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         }
+    }
 
+    override fun onPostPartMessageSuccess(postedMessage: String) {
+    }
+
+    override fun onPostPartMessageFail(error: Throwable) {
+    }
+
+    override fun onPostAllMessageSuccess() {
     }
 }

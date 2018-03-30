@@ -1,11 +1,10 @@
 package com.hoasung.twitsplit
 
 import com.hoasung.twitsplit.mvp.tweeter.BigSpanOfNonWhitespaceException
+import com.hoasung.twitsplit.mvp.tweeter.SplitMessageUtil
 import com.hoasung.twitsplit.mvp.tweeter.TweeterPostPresenter
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.junit.rules.ExpectedException
-import org.junit.Rule
 
 
 /**
@@ -18,7 +17,7 @@ class SplitMessageUnitTest {
     @Test
     fun oneSegment() {
         val text = "I can't believe Tweeter now supports chunking"
-        val segments = TweeterPostPresenter.splitMessage(text, 50)
+        val segments = SplitMessageUtil.splitMessage(text, 50)
 
         for (seg in segments) {
             System.out.println(seg)
@@ -33,7 +32,7 @@ class SplitMessageUnitTest {
     @Test
     fun twoSegment() {
         val text = "I can't believe Tweeter now supports chunking my messages, so I don't have to do it myself."
-        val segments = TweeterPostPresenter.splitMessage(text, 50)
+        val segments = SplitMessageUtil.splitMessage(text, 50)
 
         for (seg in segments) {
             System.out.println(seg)
@@ -50,14 +49,14 @@ class SplitMessageUnitTest {
     @Test(expected = BigSpanOfNonWhitespaceException::class)
     fun bigSpanOfNonWhitespaceException() {
         val text = "I can't believe Tweeternowsupportschunkingmymessages,soIdon'thavetodo it myself."
-        val messages = TweeterPostPresenter.splitMessage(text, 50)
+        val messages = SplitMessageUtil.splitMessage(text, 50)
         assertEquals(messages, null)
     }
 
     @Test
     fun noBigSpanOfNonWhitespaceException() {
         val text = "I can't believe,soIdon'thavetodo it myself."
-        val messages = TweeterPostPresenter.splitMessage(text, 50)
+        val messages = SplitMessageUtil.splitMessage(text, 50)
         assertEquals(messages.size, 1)
     }
 }

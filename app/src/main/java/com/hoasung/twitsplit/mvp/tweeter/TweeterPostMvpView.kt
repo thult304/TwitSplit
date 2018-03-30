@@ -8,6 +8,7 @@ interface TweeterPostMvpView : MvpView{
     fun hideLoading()
     fun getSubscribeScheduler(): Scheduler?
     fun getObserveScheduler(): Scheduler?
-    fun onParsedMessageSuccess(segments: List<String>?)
-    fun onParsedMessageFail(error: Throwable?)
+    fun onPostPartMessageSuccess(postedMessage: String)
+    fun onPostPartMessageFail(error: Throwable)
+    fun onPostAllMessageSuccess()
 }
