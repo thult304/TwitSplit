@@ -11,11 +11,11 @@ open class BaseFragment : Fragment() {
         return activity != null && !isDetached
     }
 
-    protected fun showLoading() {
+    fun showLoading() {
     }
 
 
-    protected fun hideLoading() {
+    fun hideLoading() {
     }
 
     protected fun closeMe() {

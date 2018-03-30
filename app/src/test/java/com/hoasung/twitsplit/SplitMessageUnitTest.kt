@@ -1,10 +1,11 @@
 package com.hoasung.twitsplit
 
+import com.hoasung.twitsplit.mvp.tweeter.BigSpanOfNonWhitespaceException
+import com.hoasung.twitsplit.mvp.tweeter.TweeterPostPresenter
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.rules.ExpectedException
 import org.junit.Rule
-
 
 
 /**
@@ -14,89 +15,10 @@ import org.junit.Rule
  */
 class SplitMessageUnitTest {
 
-    fun splitMessage(text: String, maxLengthOnSegment: Int): List<String> {
-
-        //list of words in the text
-        val words = text.split(Regex("\\s+"))
-
-        //minimum number of segments we should try
-        var minSeg = (text.length / maxLengthOnSegment)
-
-        val div = (text.length % maxLengthOnSegment)
-
-        if (div > 0) {
-            minSeg += 1
-        }
-
-        //don't need to partition if just only one segment
-        if (minSeg <= 1) {
-            return listOf(text)
-        }
-
-        var currentSegment = ""
-        var currentIndex = 1
-        var tmp = ""
-        val segments = arrayListOf<String>()
-        var i = 0
-
-        while (minSeg < words.size) {
-
-            currentSegment = ""
-            currentIndex = 1
-            i = 0
-            while (i < words.size) {
-                //build part indicator
-                if (currentSegment.isEmpty()) {
-                    currentSegment = String.format("%d/%d", currentIndex, minSeg)
-                }
-
-                //try add word into the current segment
-                tmp = String.format("%s %s", currentSegment, words[i])
-
-                //if length of temp segment is valid
-                if (tmp.length <= maxLengthOnSegment) {
-                    //use temp segment
-                    currentSegment = tmp
-                    //try next word
-                    i++
-
-                    //if is the last word, then add it into the segment list
-                    if (i >= words.size) {
-                        segments.add(currentSegment)
-                    }
-                } else if (words[i].length > maxLengthOnSegment) {
-                    throw BigSpanOfNonWhitespaceException(words[i], maxLengthOnSegment)
-                } else {
-
-                    segments.add(currentSegment)
-
-                    //next segment
-                    currentSegment = ""
-                    currentIndex += 1
-                }
-            }
-
-            if (segments.size == minSeg) {
-                //minSeg is the best number of segments we should partition
-                break;
-            } else {
-                segments.clear()
-
-                //try new number of segment
-                minSeg += 1
-            }
-        }
-
-        return segments
-    }
-
-    class BigSpanOfNonWhitespaceException(word: String, maxLength: Int) : Throwable() {
-    }
-
     @Test
     fun oneSegment() {
         val text = "I can't believe Tweeter now supports chunking"
-        val segments = splitMessage(text, 50)
+        val segments = TweeterPostPresenter.splitMessage(text, 50)
 
         for (seg in segments) {
             System.out.println(seg)
@@ -111,7 +33,7 @@ class SplitMessageUnitTest {
     @Test
     fun twoSegment() {
         val text = "I can't believe Tweeter now supports chunking my messages, so I don't have to do it myself."
-        val segments = splitMessage(text, 50)
+        val segments = TweeterPostPresenter.splitMessage(text, 50)
 
         for (seg in segments) {
             System.out.println(seg)
@@ -128,14 +50,14 @@ class SplitMessageUnitTest {
     @Test(expected = BigSpanOfNonWhitespaceException::class)
     fun bigSpanOfNonWhitespaceException() {
         val text = "I can't believe Tweeternowsupportschunkingmymessages,soIdon'thavetodo it myself."
-        val messages = splitMessage(text, 50)
+        val messages = TweeterPostPresenter.splitMessage(text, 50)
         assertEquals(messages, null)
     }
 
     @Test
     fun noBigSpanOfNonWhitespaceException() {
         val text = "I can't believe,soIdon'thavetodo it myself."
-        val messages = splitMessage(text, 50)
+        val messages = TweeterPostPresenter.splitMessage(text, 50)
         assertEquals(messages.size, 1)
     }
 }
