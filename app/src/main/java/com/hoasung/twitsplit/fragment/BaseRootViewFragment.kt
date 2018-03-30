@@ -12,7 +12,7 @@ import android.view.ViewGroup
  * Created by thult304 on 3/3/18.
  */
 
-abstract class BaseRootViewFragment<ViewBinding : ViewDataBinding> : Fragment() {
+abstract class BaseRootViewFragment<ViewBinding : ViewDataBinding> : BaseFragment() {
     protected lateinit var viewBinding: ViewBinding
 
     protected abstract val layoutId: Int

@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">TwitSplit</string>
+    <string name="splash_text">Please wait splash screen a minute</string>
+    <string name="enter_post_message">Enter post message:</string>
+    <string name="post">Post</string>
+    <string name="error_post_message">Message is invalid</string>
+
 </resources>
