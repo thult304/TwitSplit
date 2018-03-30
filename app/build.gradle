@@ -21,6 +21,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    //enable data binding
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -38,5 +43,5 @@ dependencies {
     implementation deps.rx.rxandroid
 
     //for Data binding
-    kapt deps.databinding
+    //kapt deps.databinding
 }
