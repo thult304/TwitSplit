@@ -42,6 +42,7 @@ dependencies {
     implementation deps.rx.rxjava
     implementation deps.rx.rxandroid
 
-    //for Data binding
-    //kapt deps.databinding
+    //Material dialog
+    //implementation deps.material_dialogs.core
+    //implementation deps.material_dialogs.commons
 }
