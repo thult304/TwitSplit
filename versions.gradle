@@ -31,6 +31,7 @@ versions.espresso = "3.0.1"
 versions.atsl_runner = "1.0.1"
 versions.databinding = "3.0.0"
 versions.material_dialogs = "0.9.6.0"
+versions.arch = "1.1.1"
 
 def deps = [:]
 
@@ -59,8 +60,14 @@ deps.rx = rx
 
 def material_dialogs = [:]
 material_dialogs.core = "com.afollestad.material-dialogs:core:$versions.material_dialogs"
-material_dialogs.commons = "com.afollestad.material-dialogs:commons:$versions.material_dialogs"
 deps.material_dialogs = material_dialogs
+
+def arch = [:]
+arch.viewmodel = "android.arch.lifecycle:viewmodel:$versions.arch"
+arch.livedata = "android.arch.lifecycle:livedata:$versions.arch"
+arch.compiler = "android.arch.lifecycle:compiler:$versions.arch"
+arch.core_testing = "android.arch.core:core-testing:$versions.arch"
+deps.arch = arch
 
 deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"
 deps.constraint_layout = "com.android.support.constraint:constraint-layout:$versions.constraint_layout"
