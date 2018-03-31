@@ -4,6 +4,7 @@ import android.app.Activity
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.text.method.ScrollingMovementMethod
 import android.view.View
 import com.hoasung.twitsplit.R
 import com.hoasung.twitsplit.activity.MainActivity
@@ -16,6 +17,7 @@ import com.nvg.mvp.MvpView
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+
 
 class PostMessageFragment :
         BaseRootViewMvpFragment<FragmentTweeterPostBinding, TweeterPostPresenter>(),
@@ -51,6 +53,9 @@ class PostMessageFragment :
         viewBinding.handlers = this
 
         viewBinding.messageBox.addTextChangedListener(TextChangedListener())
+
+        viewBinding.postedMessageBox.movementMethod = ScrollingMovementMethod();
+
     }
 
     override fun onClickPost(view: View) {
@@ -75,8 +80,11 @@ class PostMessageFragment :
     }
 
     override fun onPostPartMessageSuccess(postedMessage: String) {
-        viewBinding.postedMessageBox.text.append(postedMessage)
-        viewBinding.postedMessageBox.text.append("\n")
+        val builder = StringBuilder()
+        builder.append(viewBinding.postedMessageBox.text)
+        builder.append(postedMessage)
+        builder.append("\n")
+        viewBinding.postedMessageBox.text = builder.toString()
     }
 
     override fun onPostPartMessageFail(error: Throwable) {
