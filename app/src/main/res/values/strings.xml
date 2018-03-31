@@ -4,5 +4,6 @@
     <string name="enter_post_message">Enter post message:</string>
     <string name="post">Post</string>
     <string name="error_post_message">Message is invalid</string>
+    <string name="posted_messages">Posted Messages</string>
 
 </resources>

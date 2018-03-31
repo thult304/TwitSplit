@@ -75,11 +75,16 @@ class PostMessageFragment :
     }
 
     override fun onPostPartMessageSuccess(postedMessage: String) {
+        viewBinding.postedMessageBox.text.append(postedMessage)
+        viewBinding.postedMessageBox.text.append("\n")
     }
 
     override fun onPostPartMessageFail(error: Throwable) {
+        viewBinding.errorMessageView.visibility = View.VISIBLE
     }
 
     override fun onPostAllMessageSuccess() {
+        viewBinding.messageBox.text.clear()
+        viewBinding.errorMessageView.visibility = View.INVISIBLE
     }
 }
