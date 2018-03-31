@@ -132,4 +132,8 @@ class TweeterPostViewModel : ViewModel() {
     fun resetPostingStatus() {
         postingStatus?.postValue(PostingStatus.Init)
     }
+
+    fun clearError() {
+        postedErrors?.postValue(null)
+    }
 }

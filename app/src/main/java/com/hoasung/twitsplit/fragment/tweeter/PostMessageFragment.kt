@@ -101,9 +101,13 @@ class PostMessageFragment :
 
         postViewModel!!.getPostedErrors()?.observe(this, Observer { error ->
 
-            viewBinding.errorMessageView.visibility = View.VISIBLE
-            showErrorDialog(error?.message
-                    ?: getString(R.string.error_message_something_went_wrong))
+            error?.let {
+                viewBinding.errorMessageView.visibility = View.VISIBLE
+                showErrorDialog(error.message
+                        ?: getString(R.string.error_message_something_went_wrong))
+
+                postViewModel?.clearError()
+            }
 
         })
     }
