@@ -17,8 +17,7 @@ abstract class BaseRootViewFragment<ViewBinding : ViewDataBinding> : BaseFragmen
 
     protected abstract val layoutId: Int
 
-
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         if (!::viewBinding.isInitialized) {
             viewBinding = DataBindingUtil.inflate(inflater!!, layoutId, null, false)

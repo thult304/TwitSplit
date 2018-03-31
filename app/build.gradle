@@ -46,8 +46,9 @@ dependencies {
     implementation deps.material_dialogs.core
 
     //Architecture Components
-    implementation deps.arch.viewmodel
-    implementation deps.arch.livedata
+    implementation deps.arch.extensions
+    //implementation deps.arch.viewmodel
+    //implementation deps.arch.livedata
     annotationProcessor deps.arch.compiler
     testImplementation deps.arch.core_testing
 

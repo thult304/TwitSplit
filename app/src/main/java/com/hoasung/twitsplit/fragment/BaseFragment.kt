@@ -1,8 +1,8 @@
 package com.hoasung.twitsplit.fragment
 
 import android.app.Dialog
-import android.app.Fragment
 import android.content.DialogInterface
+import android.support.v4.app.Fragment
 import com.hoasung.twitsplit.R
 import com.hoasung.twitsplit.util.DialogUtil
 
@@ -42,7 +42,9 @@ open class BaseFragment : Fragment() {
     fun toggleProgressLoading(isShow: Boolean) {
         if (mProgressBar == null) {
             mOnCancelProgressListener = cancelProgressDialog
-            mProgressBar = DialogUtil.getProgressDialog(activity, mOnCancelProgressListener!!)
+            activity?.let {
+                mProgressBar = DialogUtil.getProgressDialog(it, mOnCancelProgressListener!!)
+            }
         }
 
         if (isShow) {
@@ -60,8 +62,9 @@ open class BaseFragment : Fragment() {
     }
 
     fun showErrorDialog(message: String) {
-
-        DialogUtil.showOneButtonDialog(activity, getString(R.string.dialog_error_title),
-                message, null)
+        activity?.let {
+            DialogUtil.showOneButtonDialog(it, getString(R.string.dialog_error_title),
+                    message, null)
+        }
     }
 }

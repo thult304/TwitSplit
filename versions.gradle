@@ -63,6 +63,7 @@ material_dialogs.core = "com.afollestad.material-dialogs:core:$versions.material
 deps.material_dialogs = material_dialogs
 
 def arch = [:]
+arch.extensions = "android.arch.lifecycle:extensions:$versions.arch"
 arch.viewmodel = "android.arch.lifecycle:viewmodel:$versions.arch"
 arch.livedata = "android.arch.lifecycle:livedata:$versions.arch"
 arch.compiler = "android.arch.lifecycle:compiler:$versions.arch"

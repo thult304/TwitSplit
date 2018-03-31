@@ -1,6 +1,9 @@
 package com.hoasung.twitsplit.fragment.tweeter
 
 import android.app.Activity
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
@@ -13,6 +16,7 @@ import com.hoasung.twitsplit.fragment.BaseRootViewMvpFragment
 import com.hoasung.twitsplit.listener.PostMessageListener
 import com.hoasung.twitsplit.mvp.tweeter.TweeterPostMvpView
 import com.hoasung.twitsplit.mvp.tweeter.TweeterPostPresenter
+import com.hoasung.twitsplit.mvp.tweeter.TweeterPostViewModel
 import com.nvg.mvp.MvpView
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -56,6 +60,11 @@ class PostMessageFragment :
 
         viewBinding.postedMessageBox.movementMethod = ScrollingMovementMethod();
 
+        val model = ViewModelProviders.of(this).get(TweeterPostViewModel::class.java)
+
+        model.getPostedMessages().observe(this, Observer<List<String>> {
+
+        })
     }
 
     override fun onClickPost(view: View) {
