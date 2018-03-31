@@ -1,8 +1,6 @@
 package com.hoasung.twitsplit.fragment.tweeter
 
-import android.app.Activity
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.text.Editable
 import android.text.TextUtils
@@ -10,10 +8,12 @@ import android.text.TextWatcher
 import android.text.method.ScrollingMovementMethod
 import android.view.View
 import com.hoasung.twitsplit.R
+import com.hoasung.twitsplit.activity.BaseActivity
 import com.hoasung.twitsplit.activity.MainActivity
 import com.hoasung.twitsplit.databinding.FragmentTweeterPostBinding
 import com.hoasung.twitsplit.fragment.BaseRootViewMvpFragment
 import com.hoasung.twitsplit.listener.PostMessageListener
+import com.hoasung.twitsplit.mvp.tweeter.PostingStatus
 import com.hoasung.twitsplit.mvp.tweeter.TweeterPostMvpView
 import com.hoasung.twitsplit.mvp.tweeter.TweeterPostPresenter
 import com.hoasung.twitsplit.mvp.tweeter.TweeterPostViewModel
@@ -37,10 +37,12 @@ class PostMessageFragment :
     }
 
     companion object {
-        fun showMe(activity: Activity) {
+        fun showMe(activity: BaseActivity) {
             MainActivity.showFragment(activity, PostMessageFragment::class.java)
         }
     }
+
+    private var postViewModel: TweeterPostViewModel? = null
 
     private var mMessage: String? = null
 
@@ -60,15 +62,54 @@ class PostMessageFragment :
 
         viewBinding.postedMessageBox.movementMethod = ScrollingMovementMethod();
 
-        val model = ViewModelProviders.of(this).get(TweeterPostViewModel::class.java)
+        postViewModel = ViewModelProviders.of(this).get(TweeterPostViewModel::class.java)
 
-        model.getPostedMessages().observe(this, Observer<List<String>> {
+        postViewModel!!.getPostedMessages().observe(this, Observer<List<String>> {
+            it?.let {
+
+                val builder = StringBuilder()
+
+                for (msg in it) {
+                    builder.append(msg)
+                    builder.append("\n")
+                }
+
+                viewBinding.postedMessageBox.text = builder.toString()
+            }
+        })
+
+        postViewModel!!.getPostingStatus()?.observe(this, Observer { posting ->
+            when (posting) {
+                PostingStatus.Init -> {
+                    //do nothing
+                }
+                PostingStatus.Posting -> {
+                    showLoading()
+                }
+                PostingStatus.FinishedFail -> {
+                    hideLoading()
+                    postViewModel?.resetPostingStatus()
+                }
+                PostingStatus.FinishedSuccess -> {
+                    hideLoading()
+                    viewBinding.messageBox.text.clear()
+                    viewBinding.errorMessageView.visibility = View.INVISIBLE
+                    postViewModel?.resetPostingStatus()
+                }
+            }
+        })
+
+        postViewModel!!.getPostedErrors()?.observe(this, Observer { error ->
+
+            viewBinding.errorMessageView.visibility = View.VISIBLE
+            showErrorDialog(error?.message
+                    ?: getString(R.string.error_message_something_went_wrong))
 
         })
     }
 
     override fun onClickPost(view: View) {
-        mPresenter.postMessages(mMessage!!)
+        postViewModel?.postMessages(mMessage!!)
     }
 
     private fun updateUIForPostButton() {

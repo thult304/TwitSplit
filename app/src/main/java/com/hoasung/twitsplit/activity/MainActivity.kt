@@ -1,9 +1,8 @@
 package com.hoasung.twitsplit.activity
 
-import android.app.Activity
-import android.app.Fragment
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import com.hoasung.twitsplit.R
 import com.hoasung.twitsplit.fragment.BaseFragment
 
@@ -13,7 +12,7 @@ class MainActivity : BaseActivity() {
         private val EXTRA_FRAGMENT_BUNDLE_ARGS = "fragment_bundle_args"
         private val EXTRA_CAN_BACK_NAME = "ex_can_back"
 
-        fun showFragment(activity: Activity, fragmentClass: Class<out BaseFragment>,
+        fun showFragment(activity: BaseActivity, fragmentClass: Class<out BaseFragment>,
                          data: Bundle? = null, canBack: Boolean = false, requestCode: Int = -1, flag: Int = -1) {
             val intent = Intent(activity, getActivityClass())
             if (flag != -1) {
@@ -78,7 +77,7 @@ class MainActivity : BaseActivity() {
         if (fragmentClassName == null) {
             throw NullPointerException("Fragment cannot be null")
         }
-        val fragmentManager = fragmentManager
+        val fragmentManager = supportFragmentManager
         var fragment: Fragment? = fragmentManager.findFragmentByTag(fragmentClassName)
 
         if (fragment == null) {
@@ -88,7 +87,7 @@ class MainActivity : BaseActivity() {
         if (fragment != null) {
             data?.let {
                 if (fragment.arguments != null) {
-                    fragment.arguments.putAll(it)
+                    fragment.arguments?.putAll(it)
                 } else {
                     fragment.arguments = it
                 }
@@ -103,7 +102,7 @@ class MainActivity : BaseActivity() {
 
 
     private fun attachFragment(layout: Int, fragment: Fragment, isAddToBackStack: Boolean, tag: String) {
-        val fragmentManager = fragmentManager
+        val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(layout, fragment, tag)
         if (isAddToBackStack) {

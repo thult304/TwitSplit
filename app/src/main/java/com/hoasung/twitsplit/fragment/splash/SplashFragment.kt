@@ -1,6 +1,7 @@
 package com.nvg.fragment.splash
 
 import com.hoasung.twitsplit.R
+import com.hoasung.twitsplit.activity.BaseActivity
 import com.hoasung.twitsplit.databinding.FragmentSplashBinding
 import com.hoasung.twitsplit.fragment.BaseRootViewFragment
 import com.hoasung.twitsplit.fragment.tweeter.PostMessageFragment
@@ -34,7 +35,7 @@ class SplashFragment : BaseRootViewFragment<FragmentSplashBinding>() {
     }
 
     private fun goToPostMessageScreen() {
-        PostMessageFragment.showMe(activity)
+        PostMessageFragment.showMe(activity as BaseActivity)
 
         closeMe()
     }

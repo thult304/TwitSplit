@@ -6,7 +6,7 @@ import io.reactivex.Flowable
 import io.reactivex.disposables.Disposable
 
 class TweeterPostPresenter : BaseMvpPresenter<MvpView>() {
-    private val MAX_PARTITION = 50
+    private val MAX_CHARS_ON_SEGMENT = 50
     private val postMessageList = arrayListOf<String>()
     private var mSplitDisposable: Disposable? = null
     private var mPostDisposable: Disposable? = null
@@ -16,7 +16,7 @@ class TweeterPostPresenter : BaseMvpPresenter<MvpView>() {
         view.showLoading()
 
         mSplitDisposable = Flowable.fromCallable {
-            SplitMessageUtil.splitMessage(message, MAX_PARTITION)
+            SplitMessageUtil.splitMessage(message, MAX_CHARS_ON_SEGMENT)
 
         }.subscribeOn(view.getSubscribeScheduler())
                 .observeOn(view.getObserveScheduler())
