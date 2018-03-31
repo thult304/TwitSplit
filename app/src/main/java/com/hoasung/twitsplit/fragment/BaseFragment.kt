@@ -3,6 +3,7 @@ package com.hoasung.twitsplit.fragment
 import android.app.Dialog
 import android.app.Fragment
 import android.content.DialogInterface
+import com.hoasung.twitsplit.R
 import com.hoasung.twitsplit.util.DialogUtil
 
 /**
@@ -56,5 +57,11 @@ open class BaseFragment : Fragment() {
         } else {
             mProgressBar?.dismiss()
         }
+    }
+
+    fun showErrorDialog(message: String) {
+
+        DialogUtil.showOneButtonDialog(activity, getString(R.string.dialog_error_title),
+                message, null)
     }
 }

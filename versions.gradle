@@ -30,7 +30,7 @@ versions.junit = "4.12"
 versions.espresso = "3.0.1"
 versions.atsl_runner = "1.0.1"
 versions.databinding = "3.0.0"
-versions.material_dialogs = "0.8.6.0"
+versions.material_dialogs = "0.9.6.0"
 
 def deps = [:]
 

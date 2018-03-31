@@ -43,6 +43,6 @@ dependencies {
     implementation deps.rx.rxandroid
 
     //Material dialog
-    //implementation deps.material_dialogs.core
+    implementation deps.material_dialogs.core
     //implementation deps.material_dialogs.commons
 }

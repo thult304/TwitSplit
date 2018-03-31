@@ -89,6 +89,7 @@ class PostMessageFragment :
 
     override fun onPostPartMessageFail(error: Throwable) {
         viewBinding.errorMessageView.visibility = View.VISIBLE
+        showErrorDialog(error.message ?: getString(R.string.error_message_something_went_wrong))
     }
 
     override fun onPostAllMessageSuccess() {
