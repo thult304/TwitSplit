@@ -38,6 +38,7 @@ def deps = [:]
 def support = [:]
 support.app_compat = "com.android.support:appcompat-v7:$versions.support"
 support.v4 = "com.android.support:support-v4:$versions.support"
+support.cardview = "com.android.support:cardview-v7:$versions.support"
 deps.support = support
 
 def espresso = [:]

@@ -2,6 +2,7 @@ package com.hoasung.twitsplit.fragment.tweeter
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
@@ -10,9 +11,12 @@ import android.view.View
 import com.hoasung.twitsplit.R
 import com.hoasung.twitsplit.activity.BaseActivity
 import com.hoasung.twitsplit.activity.MainActivity
+import com.hoasung.twitsplit.adapter.PostAdapter
 import com.hoasung.twitsplit.databinding.FragmentTweeterPostBinding
+import com.hoasung.twitsplit.fragment.BaseRootViewFragment
 import com.hoasung.twitsplit.fragment.BaseRootViewMvpFragment
 import com.hoasung.twitsplit.listener.PostMessageListener
+import com.hoasung.twitsplit.model.Post
 import com.hoasung.twitsplit.mvp.tweeter.PostingStatus
 import com.hoasung.twitsplit.mvp.tweeter.TweeterPostMvpView
 import com.hoasung.twitsplit.mvp.tweeter.TweeterPostPresenter
@@ -24,17 +28,8 @@ import io.reactivex.schedulers.Schedulers
 
 
 class PostMessageFragment :
-        BaseRootViewMvpFragment<FragmentTweeterPostBinding, TweeterPostPresenter>(),
-        TweeterPostMvpView,
+        BaseRootViewFragment<FragmentTweeterPostBinding>(),
         PostMessageListener {
-
-    override fun getSubscribeScheduler(): Scheduler? {
-        return Schedulers.io()
-    }
-
-    override fun getObserveScheduler(): Scheduler? {
-        return AndroidSchedulers.mainThread()
-    }
 
     companion object {
         fun showMe(activity: BaseActivity) {
@@ -42,17 +37,14 @@ class PostMessageFragment :
         }
     }
 
-    private var postViewModel: TweeterPostViewModel? = null
+    private lateinit var postViewModel: TweeterPostViewModel
 
     private var mMessage: String? = null
 
-    override var mvpView: MvpView = this
-
-    override fun createPresenter(): TweeterPostPresenter {
-        return TweeterPostPresenter()
-    }
+    private lateinit var mPostAdapter: PostAdapter
 
     override val layoutId = R.layout.fragment_tweeter_post
+
 
     override fun onViewBindingCreated(viewBinding: FragmentTweeterPostBinding) {
         viewBinding.errorMessageView.visibility = View.INVISIBLE
@@ -60,25 +52,20 @@ class PostMessageFragment :
 
         viewBinding.messageBox.addTextChangedListener(TextChangedListener())
 
-        viewBinding.postedMessageBox.movementMethod = ScrollingMovementMethod();
+        mPostAdapter = PostAdapter()
+        viewBinding.postsList.adapter = mPostAdapter
 
         postViewModel = ViewModelProviders.of(this).get(TweeterPostViewModel::class.java)
 
-        postViewModel!!.getPostedMessages().observe(this, Observer<List<String>> {
-            it?.let {
-
-                val builder = StringBuilder()
-
-                for (msg in it) {
-                    builder.append(msg)
-                    builder.append("\n")
-                }
-
-                viewBinding.postedMessageBox.text = builder.toString()
+        postViewModel.getPostedMessages().observe(this, Observer<List<Post>> {
+            if (it != null) {
+                mPostAdapter.setPostList(it)
             }
+
+            viewBinding.executePendingBindings()
         })
 
-        postViewModel!!.getPostingStatus()?.observe(this, Observer { posting ->
+        postViewModel.getPostingStatus()?.observe(this, Observer { posting ->
             when (posting) {
                 PostingStatus.Init -> {
                     //do nothing
@@ -88,18 +75,18 @@ class PostMessageFragment :
                 }
                 PostingStatus.FinishedFail -> {
                     hideLoading()
-                    postViewModel?.resetPostingStatus()
+                    postViewModel.resetPostingStatus()
                 }
                 PostingStatus.FinishedSuccess -> {
                     hideLoading()
                     viewBinding.messageBox.text.clear()
                     viewBinding.errorMessageView.visibility = View.INVISIBLE
-                    postViewModel?.resetPostingStatus()
+                    postViewModel.resetPostingStatus()
                 }
             }
         })
 
-        postViewModel!!.getPostedErrors()?.observe(this, Observer { error ->
+        postViewModel.getPostedErrors().observe(this, Observer { error ->
 
             error?.let {
                 viewBinding.errorMessageView.visibility = View.VISIBLE
@@ -113,7 +100,7 @@ class PostMessageFragment :
     }
 
     override fun onClickPost(view: View) {
-        postViewModel?.postMessages(mMessage!!)
+        postViewModel.postMessages(mMessage!!)
     }
 
     private fun updateUIForPostButton() {
@@ -131,23 +118,5 @@ class PostMessageFragment :
 
         override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         }
-    }
-
-    override fun onPostPartMessageSuccess(postedMessage: String) {
-        val builder = StringBuilder()
-        builder.append(viewBinding.postedMessageBox.text)
-        builder.append(postedMessage)
-        builder.append("\n")
-        viewBinding.postedMessageBox.text = builder.toString()
-    }
-
-    override fun onPostPartMessageFail(error: Throwable) {
-        viewBinding.errorMessageView.visibility = View.VISIBLE
-        showErrorDialog(error.message ?: getString(R.string.error_message_something_went_wrong))
-    }
-
-    override fun onPostAllMessageSuccess() {
-        viewBinding.messageBox.text.clear()
-        viewBinding.errorMessageView.visibility = View.INVISIBLE
     }
 }

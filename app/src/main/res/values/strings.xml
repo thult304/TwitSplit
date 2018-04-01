@@ -9,5 +9,6 @@
     <string name="posted_messages">Posted Messages</string>
     <string name="dialog_error_title">Error</string>
     <string name="error_message_something_went_wrong">Something went wrong. Please try again.</string>
+    <string name="cd_posts_list">Posts List</string>
 
 </resources>

@@ -3,6 +3,7 @@ package com.hoasung.twitsplit.mvp.tweeter
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import com.hoasung.twitsplit.model.Post
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -11,7 +12,7 @@ import io.reactivex.schedulers.Schedulers
 class TweeterPostViewModel : ViewModel() {
     private val MAX_CHARS_ON_SEGMENT = 50
 
-    private var postedMessages: MutableLiveData<List<String>>? = null
+    private var postedMessages: MutableLiveData<List<Post>>? = null
     private val disposable = CompositeDisposable()
 
     private var postedErrors: MutableLiveData<Throwable>? = null
@@ -37,9 +38,9 @@ class TweeterPostViewModel : ViewModel() {
     }
 
 
-    fun getPostedMessages(): LiveData<List<String>> {
+    fun getPostedMessages(): LiveData<List<Post>> {
         if (postedMessages == null) {
-            postedMessages = MutableLiveData<List<String>>()
+            postedMessages = MutableLiveData<List<Post>>()
 
             loadPostedMessages()
         }
@@ -101,8 +102,8 @@ class TweeterPostViewModel : ViewModel() {
         postingStatus?.postValue(PostingStatus.FinishedSuccess)
     }
 
-    private fun onPostPartMessageSuccess(postedMsg: String) {
-        var histories: ArrayList<String>? = postedMessages?.value as ArrayList<String>?;
+    private fun onPostPartMessageSuccess(postedMsg: Post) {
+        var histories: ArrayList<Post>? = postedMessages?.value as ArrayList<Post>?;
         if (histories == null) {
             histories = ArrayList()
         }
@@ -111,11 +112,11 @@ class TweeterPostViewModel : ViewModel() {
         postedMessages?.postValue(histories)
     }
 
-    private fun postMessage(message: String): Flowable<String> {
+    private fun postMessage(message: String): Flowable<Post> {
         return Flowable.fromCallable({
             System.out.println("Posting message:$message")
             Thread.sleep(1000)
-            message
+            Post(System.currentTimeMillis(), message)
         })
     }
 

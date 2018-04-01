@@ -38,6 +38,9 @@ dependencies {
     androidTestImplementation deps.atsl.runner
     androidTestImplementation deps.espresso.core
 
+    // Support libraries
+    implementation deps.support.cardview
+
     //RxJava and RxAndroid
     implementation deps.rx.rxjava
     implementation deps.rx.rxandroid
