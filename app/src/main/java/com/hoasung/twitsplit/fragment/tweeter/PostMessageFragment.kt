@@ -7,6 +7,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import com.hoasung.twitsplit.R
 import com.hoasung.twitsplit.activity.BaseActivity
@@ -16,6 +17,7 @@ import com.hoasung.twitsplit.databinding.FragmentTweeterPostBinding
 import com.hoasung.twitsplit.fragment.BaseRootViewFragment
 import com.hoasung.twitsplit.listener.PostMessageListener
 import com.hoasung.twitsplit.model.Post
+import com.hoasung.twitsplit.mvvm.tweeter.BigSpanOfNonWhitespaceException
 import com.hoasung.twitsplit.mvvm.tweeter.PostingStatus
 import com.hoasung.twitsplit.mvvm.tweeter.TweeterPostViewModel
 import com.hoasung.twitsplit.repository.TweeterPostRepository
@@ -51,7 +53,7 @@ class PostMessageFragment :
 
         postViewModel = ViewModelProviders.of(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-
+                @Suppress("UNCHECKED_CAST")
                 return TweeterPostViewModel(TweeterPostRepository()) as T
             }
 
@@ -93,7 +95,12 @@ class PostMessageFragment :
                 showErrorDialog(error.message
                         ?: getString(R.string.error_message_something_went_wrong))
 
-                postViewModel?.clearError()
+
+                if (error is BigSpanOfNonWhitespaceException) {
+                    Log.d("PostMessageFragment", "invalid word[${error.maxLength}]:$error.invalidWord")
+                }
+
+                postViewModel.clearError()
             }
 
         })

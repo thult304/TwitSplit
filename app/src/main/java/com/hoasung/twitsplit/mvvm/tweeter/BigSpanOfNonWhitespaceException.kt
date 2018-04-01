@@ -1,5 +1,5 @@
 package com.hoasung.twitsplit.mvvm.tweeter
 
-class BigSpanOfNonWhitespaceException(invalidWord: String, maxLength: Int, message: String) : Throwable(message) {
+class BigSpanOfNonWhitespaceException(var invalidWord: String, var maxLength: Int, message: String) : Throwable(message) {
 
 }

@@ -20,7 +20,7 @@ abstract class BaseRootViewFragment<ViewBinding : ViewDataBinding> : BaseFragmen
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         if (!::viewBinding.isInitialized) {
-            viewBinding = DataBindingUtil.inflate(inflater!!, layoutId, null, false)
+            viewBinding = DataBindingUtil.inflate(inflater, layoutId, null, false)
             onViewBindingCreated(viewBinding)
         } else {
             onViewBindingCreated(viewBinding)

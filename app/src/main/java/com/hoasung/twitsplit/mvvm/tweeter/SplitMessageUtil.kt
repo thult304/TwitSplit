@@ -23,17 +23,13 @@ class SplitMessageUtil {
                 return listOf(text)
             }
 
-            var currentSegment = ""
-            var currentIndex = 1
-            var tmp = ""
             val segments = arrayListOf<String>()
-            var i = 0
 
             while (minSeg < words.size) {
 
-                currentSegment = ""
-                currentIndex = 1
-                i = 0
+                var currentSegment = ""
+                var currentIndex = 1
+                var i = 0
                 while (i < words.size) {
                     //build part indicator
                     if (currentSegment.isEmpty()) {
@@ -41,7 +37,7 @@ class SplitMessageUtil {
                     }
 
                     //try add word into the current segment
-                    tmp = String.format("%s %s", currentSegment, words[i])
+                    var tmp = String.format("%s %s", currentSegment, words[i])
 
                     //if length of temp segment is valid
                     if (tmp.length <= maxLengthOnSegment) {
