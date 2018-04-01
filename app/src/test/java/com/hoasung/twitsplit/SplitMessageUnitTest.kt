@@ -7,9 +7,9 @@ import org.junit.Test
 
 
 /**
- * Example local unit test, which will execute on the development machine (host).
+ * This class will do unit test for the function splitMessage
+ * it is in the class SplitMessageUtil
  *
- * See [testing documentation](http://d.android.com/tools/testing).
  */
 class SplitMessageUnitTest {
 
