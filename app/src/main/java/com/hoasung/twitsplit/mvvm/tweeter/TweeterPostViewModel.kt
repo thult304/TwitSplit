@@ -4,12 +4,13 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.hoasung.twitsplit.model.Post
+import com.hoasung.twitsplit.repository.PostRepository
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 
-class TweeterPostViewModel : ViewModel() {
+class TweeterPostViewModel(private val posRepository: PostRepository) : ViewModel() {
     private val MAX_CHARS_ON_SEGMENT = 50
 
     private var postedMessages: MutableLiveData<List<Post>>? = null
@@ -81,7 +82,7 @@ class TweeterPostViewModel : ViewModel() {
         disposable.add(Flowable.just(postMessageList)
                 .takeWhile { postMessageList.size > 0 }
                 .map { postMessageList.removeAt(0) }
-                .flatMap { message -> postMessage(message) }
+                .flatMap { message -> posRepository.postMessage(message) }
                 .repeatUntil { postMessageList.isEmpty() }
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
@@ -110,14 +111,6 @@ class TweeterPostViewModel : ViewModel() {
         histories.add(postedMsg)
 
         postedMessages?.postValue(histories)
-    }
-
-    private fun postMessage(message: String): Flowable<Post> {
-        return Flowable.fromCallable({
-            System.out.println("Posting message:$message")
-            Thread.sleep(1000)
-            Post(System.currentTimeMillis(), message)
-        })
     }
 
     private fun onPostPartMessageFail(error: Throwable) {

@@ -1,7 +1,7 @@
 package com.hoasung.twitsplit
 
-import com.hoasung.twitsplit.mvp.tweeter.BigSpanOfNonWhitespaceException
-import com.hoasung.twitsplit.mvp.tweeter.SplitMessageUtil
+import com.hoasung.twitsplit.mvvm.tweeter.BigSpanOfNonWhitespaceException
+import com.hoasung.twitsplit.mvvm.tweeter.SplitMessageUtil
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

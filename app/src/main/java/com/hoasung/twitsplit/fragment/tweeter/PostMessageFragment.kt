@@ -1,6 +1,8 @@
 package com.hoasung.twitsplit.fragment.tweeter
 
 import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModel
+import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.text.Editable
 import android.text.TextUtils
@@ -16,6 +18,7 @@ import com.hoasung.twitsplit.listener.PostMessageListener
 import com.hoasung.twitsplit.model.Post
 import com.hoasung.twitsplit.mvvm.tweeter.PostingStatus
 import com.hoasung.twitsplit.mvvm.tweeter.TweeterPostViewModel
+import com.hoasung.twitsplit.repository.TweeterPostRepository
 
 
 class PostMessageFragment :
@@ -46,7 +49,13 @@ class PostMessageFragment :
         mPostAdapter = PostAdapter()
         viewBinding.postsList.adapter = mPostAdapter
 
-        postViewModel = ViewModelProviders.of(this).get(TweeterPostViewModel::class.java)
+        postViewModel = ViewModelProviders.of(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+
+                return TweeterPostViewModel(TweeterPostRepository()) as T
+            }
+
+        }).get(TweeterPostViewModel::class.java)
 
         postViewModel.getPostedMessages().observe(this, Observer<List<Post>> {
             if (it != null) {
