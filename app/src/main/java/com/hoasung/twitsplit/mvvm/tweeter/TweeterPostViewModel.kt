@@ -1,4 +1,4 @@
-package com.hoasung.twitsplit.mvp.tweeter
+package com.hoasung.twitsplit.mvvm.tweeter
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData

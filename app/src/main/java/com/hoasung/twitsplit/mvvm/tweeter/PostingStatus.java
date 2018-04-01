@@ -1,4 +1,4 @@
-package com.hoasung.twitsplit.mvp.tweeter;
+package com.hoasung.twitsplit.mvvm.tweeter;
 
 public enum PostingStatus {
     Init, Posting, FinishedSuccess, FinishedFail

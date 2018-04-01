@@ -2,11 +2,9 @@ package com.hoasung.twitsplit.fragment.tweeter
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
-import android.text.method.ScrollingMovementMethod
 import android.view.View
 import com.hoasung.twitsplit.R
 import com.hoasung.twitsplit.activity.BaseActivity
@@ -14,17 +12,10 @@ import com.hoasung.twitsplit.activity.MainActivity
 import com.hoasung.twitsplit.adapter.PostAdapter
 import com.hoasung.twitsplit.databinding.FragmentTweeterPostBinding
 import com.hoasung.twitsplit.fragment.BaseRootViewFragment
-import com.hoasung.twitsplit.fragment.BaseRootViewMvpFragment
 import com.hoasung.twitsplit.listener.PostMessageListener
 import com.hoasung.twitsplit.model.Post
-import com.hoasung.twitsplit.mvp.tweeter.PostingStatus
-import com.hoasung.twitsplit.mvp.tweeter.TweeterPostMvpView
-import com.hoasung.twitsplit.mvp.tweeter.TweeterPostPresenter
-import com.hoasung.twitsplit.mvp.tweeter.TweeterPostViewModel
-import com.nvg.mvp.MvpView
-import io.reactivex.Scheduler
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import com.hoasung.twitsplit.mvvm.tweeter.PostingStatus
+import com.hoasung.twitsplit.mvvm.tweeter.TweeterPostViewModel
 
 
 class PostMessageFragment :
